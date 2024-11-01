@@ -1,0 +1,34 @@
+<table class="form-table">
+	<tr>
+    	<th>Wigzo is <?php echo $wigzo_app; ?></th>
+    </tr>
+    <tr >
+        <td>Browser Push: </td>
+        <td><?php echo $browser_push; ?> <?php echo $https; ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Onsite Push: </td>
+        <td><?php echo $onsite; ?> </td>
+    </tr>
+   <tr>
+    	<td>PWA: </td>
+        <td><?php echo $pwa; ?></td>
+    </tr>
+</table>
+
+ <p class="submit">
+<input type="button" class="button button-primary" onclick="javascript:wigzo.editSettingsOnWigzo();" value="Change Settings" />
+<a class="button" href="/wp-admin/options-general.php?page=wigzo&action=wremove">Remove Wigzo</a>
+</p>
+
+<script>
+    window.wigzo = {};
+    window.wigzo.editSettingsOnWigzo = function () {
+        var challangeCode = "<?php echo get_option ('wigzo_client_id'); ?>";
+        var siteId = window.location.host;
+        var redirect = window.location.toString();
+        window.location = "<?php echo $wigzo_host; ?>/integration/wordpress/frame/" + siteId + "/" + challangeCode + "?append=true&next=" + redirect;
+    }
+
+</script>

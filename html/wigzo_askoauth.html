@@ -1,0 +1,70 @@
+<style>
+#wigzo_form .form-field input{
+	width: 25em;
+	float:left;
+}
+</style>
+
+<script>
+jQuery(document).ready(function($){
+  $("#redirecturi").val (window.location.toString());
+    $('#wigzo_form').submit(function() {
+		var clientid = jQuery('input#clientid').val();
+		var clientsecret = jQuery('input#clientsecret').val();
+		var orgToken = jQuery('input#orgToken').val();
+		
+		if ( clientid == "" && clientsecret == ""){
+			jQuery('input#clientid').parent().parent().addClass('form-invalid');
+			jQuery('input#clientsecret').parent().parent().addClass('form-invalid');
+			return false;
+		}
+		if ( clientid == ""){
+			jQuery('input#clientid').parent().parent().addClass('form-invalid');
+			return false;
+		}
+		if ( clientsecret == ""){
+			jQuery('input#clientsecret').parent().parent().addClass('form-invalid');
+			return false;
+		}
+		if ( orgToken == ""){
+			jQuery('input#orgToken').parent().parent().addClass('form-invalid');
+			return false;
+		}
+        return true;
+    });
+});
+</script>
+
+<div class="wrap">
+  <h1 id="add-new-user">Wigzo</h1>
+  <div id="ajax-response"></div>
+  <p>Wigzo requires you to connect over OAuth, Go to Wigzo &gt; Applications &gt; Create New Application or read detailed documentation at <a href='https://app.wigzo.com/kb/articles' target='_blank'>https://app.wigzo.com/kb/articles</a></p>
+  <form id ="wigzo_form" method="post" class="validate">
+
+    <?php //wp_nonce_field ('wigzo-otp');
+			$nonce = wp_create_nonce( 'wigzo-otp' );
+	?>
+
+    <input type="hidden" id="redirecturi" name="redirecturi" value="" />
+	 <input type="hidden" name ="nonce" value="<?php echo $nonce;?>"/>
+    <table class="form-table">
+      <tbody>
+        <tr class="form-field form-required ">
+          <th scope="row"><label id="cust" for="user_login">Client ID <span class="description"><?php _e('(required)'); ?></span></label></th>
+          <td><input type="text" id="clientid" name="clientid" value="<?php echo get_option('wigzo_client_id');?>"></td>
+        </tr>
+        <tr class="form-field form-required">
+          <th scope="row"><label for="email">Client Secret <span class="description"><?php _e('(required)'); ?></span></label></th>
+          <td><input type="text" id="clientsecret" name="clientsecret" value="<?php echo get_option('wigzo_client_secret');?>"></td>
+        </tr>
+		<tr class="form-field form-required">
+          <th scope="row"><label for="orgToken">Organization Token <span class="description"><?php _e('(required)'); ?></span></label></th>
+          <td><input type="text" id="orgToken" name="orgToken" value="<?php echo get_option('wigzo_org_token');?>"></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="submit">
+    	<input type="submit" value="Submit" id="submit" name="submit" class="button button-primary">
+    </p>
+  </form>
+</div>
